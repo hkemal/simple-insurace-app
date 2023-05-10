@@ -9,12 +9,14 @@ import javax.persistence.Enumerated;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
-public class CampaignInputDTO {
+public class CampaignInputDTO implements Serializable {
+
     @NotNull
     @Size(min = 10, max = 50)
     @Column(unique = true)
-    @Pattern(regexp = "^2567[78].*$", message = "must be start number")
+    @Pattern(regexp = "^\\d\\w*$", message = "must be start number")
     private String name;
 
     @NotNull

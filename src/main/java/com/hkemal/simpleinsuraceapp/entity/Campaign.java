@@ -7,10 +7,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "campaign")
-public class Campaign extends AbstractAuditingEntity {
+public class Campaign implements Serializable {
 
     @Id
     @GeneratedValue
@@ -18,20 +19,23 @@ public class Campaign extends AbstractAuditingEntity {
 
     @NotNull
     @Size(min = 10, max = 50)
-    @Column(unique = true)
-    @Pattern(regexp="^2567[78].*$",message="must be start number")
+    @Column(unique = true, name = "name")
+    @Pattern(regexp = "^\\d\\w*$", message = "must be start number")
     private String name;
 
     @NotNull
     @Size(min = 20, max = 200)
+    @Column(name = "description")
     private String description;
 
     @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(name = "campaign_category")
     private CampaignCategoryEnum campaignCategory;
 
     @NotNull
     @Enumerated(EnumType.STRING)
+    @Column(name = "campaign_state")
     private CampaignStateEnum campaignState;
 
     public Campaign() {

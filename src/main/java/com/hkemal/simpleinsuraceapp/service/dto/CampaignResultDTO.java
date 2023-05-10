@@ -3,7 +3,9 @@ package com.hkemal.simpleinsuraceapp.service.dto;
 import com.hkemal.simpleinsuraceapp.service.enums.CampaignCategoryEnum;
 import com.hkemal.simpleinsuraceapp.service.enums.CampaignStateEnum;
 
-public class CampaignResultDTO {
+import java.io.Serializable;
+
+public class CampaignResultDTO implements Serializable {
 
     private Long id;
 

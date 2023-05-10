@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -23,7 +24,7 @@ public class CampaignResource {
     CampaignService campaignService;
 
     @PostMapping("/campaigns")
-    public ResponseEntity<CampaignResultDTO> createCampaign(@RequestBody CampaignInputDTO campaignInputDTO) throws URISyntaxException {
+    public ResponseEntity<CampaignResultDTO> createCampaign(@Valid @RequestBody CampaignInputDTO campaignInputDTO) throws URISyntaxException {
         log.debug("REST request to save Campaign : {}", campaignInputDTO);
         CampaignResultDTO result = (CampaignResultDTO) campaignService.save(campaignInputDTO);
         return ResponseEntity.created(new URI("/api/campaigns/" + result.getId()))
@@ -31,7 +32,7 @@ public class CampaignResource {
     }
 
     @PutMapping("/campaigns/{id}")
-    public ResponseEntity<CampaignResultDTO> updateCampaign(@PathVariable Long id, @RequestBody CampaignInputDTO campaignInputDTO) throws Exception {
+    public ResponseEntity<CampaignResultDTO> updateCampaign(@PathVariable Long id, @Valid @RequestBody CampaignInputDTO campaignInputDTO) throws Exception {
         log.debug("REST request to update Campaign : {}", campaignInputDTO);
         CampaignResultDTO result = (CampaignResultDTO) campaignService.update(id, campaignInputDTO);
         return ResponseEntity.ok().body(result);
