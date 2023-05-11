@@ -3,6 +3,7 @@ package com.hkemal.simpleinsuraceapp.webRest;
 import com.hkemal.simpleinsuraceapp.service.dto.CampaignInputDTO;
 import com.hkemal.simpleinsuraceapp.service.dto.CampaignResultDTO;
 import com.hkemal.simpleinsuraceapp.service.service.CampaignService;
+import com.hkemal.simpleinsuraceapp.service.vm.CampaignInfoVM;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,25 @@ public class CampaignResource {
                 .body(result);
     }
 
-    @PutMapping("/campaigns/{id}")
-    public ResponseEntity<CampaignResultDTO> updateCampaign(@PathVariable Long id, @Valid @RequestBody CampaignInputDTO campaignInputDTO) throws Exception {
-        log.debug("REST request to update Campaign : {}", campaignInputDTO);
-        CampaignResultDTO result = (CampaignResultDTO) campaignService.update(id, campaignInputDTO);
+    @PatchMapping("/campaigns/{id}/approve")
+    public ResponseEntity<CampaignResultDTO> patchUpdateApproveCampaign(@PathVariable Long id) throws Exception {
+        log.debug("REST request to patch update to approve campaign : {}", id);
+        CampaignResultDTO result = (CampaignResultDTO) campaignService.approveCampaign(id);
         return ResponseEntity.ok().body(result);
+    }
+
+    @PatchMapping("/campaigns/{id}/deactivate")
+    public ResponseEntity<CampaignResultDTO> patchUpdateDeactivateCampaign(@PathVariable Long id) throws Exception {
+        log.debug("REST request to patch update to deactivate campaign : {}", id);
+        CampaignResultDTO result = (CampaignResultDTO) campaignService.deactivateCampaign(id);
+        return ResponseEntity.ok().body(result);
+    }
+
+    @GetMapping("/campaigns/classified-stats")
+    public ResponseEntity<List<CampaignInfoVM>> getClassifiedStats() throws Exception {
+        log.debug("REST request to patch update to approve campaign : {}");
+        List<CampaignInfoVM> results = campaignService.getClassifiedStats();
+        return ResponseEntity.ok().body(results);
     }
 
     @GetMapping("/campaigns")
@@ -56,6 +71,5 @@ public class CampaignResource {
     public ResponseEntity<Void> deleteCampaign(@PathVariable Long id) throws Exception {
         campaignService.delete(id);
         return ResponseEntity.noContent().build();
-
     }
 }

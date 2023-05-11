@@ -29,17 +29,7 @@ public class CampaignServiceImpl implements CampaignService {
     @Override
     public CampaignResultDTO save(CampaignInputDTO campaignInputDTO) {
         Campaign campaign = campaignMapper.toEntity(campaignInputDTO);
-        this.setCampaignState(campaign);
-        campaign = campaignRepository.save(campaign);
-        CampaignResultDTO result = campaignMapper.toDto(campaign);
-        return result;
-    }
-
-    @Override
-    public CampaignResultDTO update(Long id, CampaignInputDTO campaignInputDTO) throws Exception {
-        this.getOne(id);
-        Campaign campaign = campaignMapper.toEntity(campaignInputDTO);
-        campaign.setId(id);
+        this.setCampaignState(campaignInputDTO, campaign);
         campaign = campaignRepository.save(campaign);
         CampaignResultDTO result = campaignMapper.toDto(campaign);
         return result;
@@ -69,6 +59,7 @@ public class CampaignServiceImpl implements CampaignService {
         campaignRepository.deleteById(id);
     }
 
+    @Override
     public CampaignResultDTO approveCampaign(Long id) throws Exception {
         Optional<Campaign> campaign = campaignRepository.findById(id);
         if (campaign.isPresent()) {
@@ -82,6 +73,7 @@ public class CampaignServiceImpl implements CampaignService {
         }
     }
 
+    @Override
     public CampaignResultDTO deactivateCampaign(Long id) throws Exception {
         Optional<Campaign> campaign = campaignRepository.findById(id);
         if (campaign.isPresent()) {
@@ -95,17 +87,18 @@ public class CampaignServiceImpl implements CampaignService {
         }
     }
 
+    @Override
     public List<CampaignInfoVM> getClassifiedStats() {
         List<CampaignInfoVM> campaignStats = campaignRepository.countByCampaignState();
         return campaignStats;
     }
 
-    private void setCampaignState(Campaign campaign) {
-        Optional<Campaign> campaignControl = campaignRepository.findFirstByCampaignCategoryAndNameAndDescription(campaign.getCampaignCategory(), campaign.getName(), campaign.getDescription());
+    private void setCampaignState(CampaignInputDTO campaignInputDTO, Campaign campaign) {
+        Optional<Campaign> campaignControl = campaignRepository.findFirstByCampaignCategoryAndNameAndDescription(campaignInputDTO.getCampaignCategory(), campaignInputDTO.getName(), campaignInputDTO.getDescription());
         if (campaignControl.isPresent()) {
             campaign.setCampaignState(CampaignStateEnum.REPETITIVE);
         } else {
-            if (campaign.getCampaignCategory().equals(CampaignCategoryEnum.HS)) {
+            if (campaignInputDTO.getCampaignCategory().equals(CampaignCategoryEnum.HS)) {
                 campaign.setCampaignState(CampaignStateEnum.ACTIVE);
             } else {
                 campaign.setCampaignState(CampaignStateEnum.PENDING);

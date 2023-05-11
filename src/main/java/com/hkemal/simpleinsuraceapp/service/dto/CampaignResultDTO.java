@@ -56,4 +56,39 @@ public class CampaignResultDTO implements Serializable {
     public void setCampaignState(CampaignStateEnum campaignState) {
         this.campaignState = campaignState;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CampaignResultDTO)) return false;
+
+        CampaignResultDTO that = (CampaignResultDTO) o;
+
+        if (!getId().equals(that.getId())) return false;
+        if (!getName().equals(that.getName())) return false;
+        if (!getDescription().equals(that.getDescription())) return false;
+        if (getCampaignCategory() != that.getCampaignCategory()) return false;
+        return getCampaignState() == that.getCampaignState();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId().hashCode();
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + getDescription().hashCode();
+        result = 31 * result + getCampaignCategory().hashCode();
+        result = 31 * result + getCampaignState().hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CampaignResultDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", campaignCategory=" + campaignCategory +
+                ", campaignState=" + campaignState +
+                '}';
+    }
 }

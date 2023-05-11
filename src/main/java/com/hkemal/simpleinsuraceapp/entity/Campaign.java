@@ -41,6 +41,14 @@ public class Campaign implements Serializable {
     public Campaign() {
     }
 
+    public Campaign(Long id, String name, String description, CampaignCategoryEnum campaignCategory, CampaignStateEnum campaignState) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.campaignCategory = campaignCategory;
+        this.campaignState = campaignState;
+    }
+
     public Long getId() {
         return id;
     }
@@ -79,5 +87,40 @@ public class Campaign implements Serializable {
 
     public void setCampaignState(CampaignStateEnum campaignState) {
         this.campaignState = campaignState;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Campaign)) return false;
+
+        Campaign campaign = (Campaign) o;
+
+        if (!getId().equals(campaign.getId())) return false;
+        if (!getName().equals(campaign.getName())) return false;
+        if (!getDescription().equals(campaign.getDescription())) return false;
+        if (getCampaignCategory() != campaign.getCampaignCategory()) return false;
+        return getCampaignState() == campaign.getCampaignState();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getId().hashCode();
+        result = 31 * result + getName().hashCode();
+        result = 31 * result + getDescription().hashCode();
+        result = 31 * result + getCampaignCategory().hashCode();
+        result = 31 * result + getCampaignState().hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Campaign{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", campaignCategory=" + campaignCategory +
+                ", campaignState=" + campaignState +
+                '}';
     }
 }

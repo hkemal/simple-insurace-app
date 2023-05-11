@@ -16,6 +16,7 @@ public interface CampaignRepository extends JpaRepository<Campaign, Long> {
     @Query("select " +
             " count(C.id) as count," +
             " C.campaignState as campaignState " +
-            " from  Campaign as C")
+            " from  Campaign as C" +
+            " group by C.campaignState")
     List<CampaignInfoVM> countByCampaignState();
 }

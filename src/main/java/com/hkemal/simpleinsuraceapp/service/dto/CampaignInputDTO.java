@@ -1,7 +1,6 @@
 package com.hkemal.simpleinsuraceapp.service.dto;
 
 import com.hkemal.simpleinsuraceapp.service.enums.CampaignCategoryEnum;
-import com.hkemal.simpleinsuraceapp.service.enums.CampaignStateEnum;
 
 import javax.persistence.Column;
 import javax.persistence.EnumType;
@@ -27,10 +26,6 @@ public class CampaignInputDTO implements Serializable {
     @Enumerated(EnumType.STRING)
     private CampaignCategoryEnum campaignCategory;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private CampaignStateEnum campaignState;
-
     public String getName() {
         return name;
     }
@@ -55,11 +50,32 @@ public class CampaignInputDTO implements Serializable {
         this.campaignCategory = campaignCategory;
     }
 
-    public CampaignStateEnum getCampaignState() {
-        return campaignState;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CampaignInputDTO)) return false;
+
+        CampaignInputDTO that = (CampaignInputDTO) o;
+
+        if (!getName().equals(that.getName())) return false;
+        if (!getDescription().equals(that.getDescription())) return false;
+        return getCampaignCategory() == that.getCampaignCategory();
     }
 
-    public void setCampaignState(CampaignStateEnum campaignState) {
-        this.campaignState = campaignState;
+    @Override
+    public int hashCode() {
+        int result = getName().hashCode();
+        result = 31 * result + getDescription().hashCode();
+        result = 31 * result + getCampaignCategory().hashCode();
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "CampaignInputDTO{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", campaignCategory=" + campaignCategory +
+                '}';
     }
 }
